@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 // import useSWR from "swr";
-
 // const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const linkCreateSchema = z.object({
@@ -14,7 +13,7 @@ const linkCreateSchema = z.object({
 
 type FormData = z.infer<typeof linkCreateSchema>;
 
-export default function LoginPage() {
+export default function New() {
   // const { data, error } = useSWR("api/test", fetcher);
 
   const {
