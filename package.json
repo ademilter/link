@@ -1,0 +1,48 @@
+{
+  "name": "link",
+  "version": "0.0.1",
+  "author": {
+    "name": "Adem ilter",
+    "email": "ademilter@gmail.com",
+    "url": "https://ademilter.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.5",
+    "@next/font": "^13.0.1",
+    "@prisma/client": "^4.6.1",
+    "@sindresorhus/slugify": "^2.1.1",
+    "@upstash/redis": "^1.16.0",
+    "@vercel/analytics": "^0.1.2",
+    "classnames": "^2.3.2",
+    "clsx": "^1.2.1",
+    "framer-motion": "^7.6.1",
+    "next": "^13.0.1",
+    "next-auth": "^4.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.39.3",
+    "sharp": "^0.31.1",
+    "tailwind-merge": "^1.8.0",
+    "use-http": "^1.0.27",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@types/node": "^18.11.7",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.18",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
+    "prisma": "^4.6.1",
+    "tailwindcss": "^3.2.1",
+    "typescript": "^4.8.4"
+  }
+}

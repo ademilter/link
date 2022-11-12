@@ -1,0 +1,15 @@
+.next
+.idea
+node_modules
+public/ui
+public/sw*
+public/workbox*
+.DS_Store
+out/
+.env
+.env.local
+public/feed.xml
+.vercel
+.contentlayer
+~partytown
+.vscode
