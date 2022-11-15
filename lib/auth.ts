@@ -20,16 +20,20 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  pages: {
-    signIn: "/login",
-  },
   callbacks: {
     async session({ token, session }) {
+      const dbUser = await db.user.findFirst({
+        where: {
+          email: token.email,
+        },
+      });
+
       if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture;
+        session.user.username = dbUser.username;
       }
 
       return session;
@@ -41,9 +45,9 @@ export const authOptions: NextAuthOptions = {
         },
       });
 
-      if (isNewUser && dbUser) {
+      if (isNewUser) {
         await db.user.update({
-          where: { email: user.email },
+          where: { email: token.email },
           data: {
             username: profile["login"],
             bio: profile["bio"],
@@ -63,6 +67,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        username: dbUser.username,
       };
     },
   },
