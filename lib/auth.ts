@@ -34,12 +34,24 @@ export const authOptions: NextAuthOptions = {
 
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, profile, isNewUser }) {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
         },
       });
+
+      if (isNewUser && dbUser) {
+        await db.user.update({
+          where: { email: user.email },
+          data: {
+            username: profile["login"],
+            bio: profile["bio"],
+            blog: profile["blog"],
+            location: profile["location"],
+          },
+        });
+      }
 
       if (!dbUser) {
         token.id = user.id;

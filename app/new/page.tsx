@@ -29,7 +29,7 @@ export default function New() {
   async function onSubmit(data: FormData) {
     try {
       setIsLoading(true);
-      const res = await fetch("/api/links", {
+      const res = await fetch("/api/link", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

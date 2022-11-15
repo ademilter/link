@@ -1,63 +1,63 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
-}
-
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
-  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
+  //  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")  // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/migrate-shadow
   referentialIntegrity = "prisma"
 }
 
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"] // You won't need this in Prisma 3.X or higher.
+}
+
 model Account {
-  id                String   @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String?  @db.Text
-  refresh_token_expires_in     Int?
-  access_token      String?  @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?  @db.Text
-  session_state     String?
-  createdAt         DateTime @default(now()) @map(name: "created_at")
-  updatedAt         DateTime @default(now()) @map(name: "updated_at")
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                       String   @id @default(cuid())
+  createdAt                DateTime @default(now()) @map(name: "created_at")
+  updatedAt                DateTime @default(now()) @map(name: "updated_at")
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?  @db.Text
+  refresh_token_expires_in Int?
+  access_token             String?  @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?  @db.Text
+  session_state            String?
+  user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@map(name: "accounts")
 }
 
 model Session {
   id           String   @id @default(cuid())
+  expires      DateTime
   sessionToken String   @unique
   userId       String
-  expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map(name: "sessions")
 }
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  email         String?   @unique
+  emailVerified DateTime?
+  name          String?
+  image         String?
+  username      String?   @db.VarChar(512) // github.login == slug
+  bio           String?   @db.VarChar(512)
+  blog          String?   @db.VarChar(512)
+  location      String?   @db.VarChar(256)
   accounts      Account[]
   sessions      Session[]
   Link          Link[]
-
-  @@map(name: "users")
+  Vote          Vote[]
 }
 
 model VerificationToken {
@@ -66,18 +66,30 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-  @@map(name: "verification_tokens")
 }
 
 model Link {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @default(now()) @map(name: "updated_at")
+  published   Boolean  @default(false)
+  url         String   @db.VarChar(512)
+  title       String?  @db.VarChar(512)
+  description String?  @db.VarChar(2048)
+  image       String?  @db.VarChar(512)
+  icon        String?
+  data        Json
+  votes       Vote[]
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Vote {
   id        String   @id @default(cuid())
-  title     String
-  link      String
-  published Boolean  @default(false)
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-
-  @@map(name: "links")
+  linkId    String
+  link      Link     @relation(fields: [linkId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
