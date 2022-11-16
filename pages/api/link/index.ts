@@ -26,10 +26,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       const options: Options = {
         url: parsedUrl,
-        maxRedirects: 1,
+        maxRedirects: 3,
       };
 
       const data = await getMetaData(options);
+
+      console.log(data);
 
       const link = await db.link.create({
         data: {

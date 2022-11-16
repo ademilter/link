@@ -48,13 +48,28 @@ export default async function UserPage({ params }: UserPageProps) {
         )}
       </div>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-10">
         {links.map((link) => (
-          <div key={link.id}>
-            <img src={link.icon} alt={link.url} width={16} height={16} />
-            <a href={link.url}>{link.url}</a>
-            <p>{link.description}</p>
-            <p>{DateTime.fromJSDate(link.createdAt).toRelative()}</p>
+          <div
+            key={link.id}
+            className="py-4 flex items-start gap-2 border-t border-solid border-t-gray-200"
+          >
+            <img
+              className="mt-1"
+              src={link.icon}
+              alt={link.url}
+              width={16}
+              height={16}
+            />
+            <div>
+              <a href={link.url} className="underline">
+                {link.url}
+              </a>
+              <footer className="opacity-80">
+                <p>{link.description}</p>
+                <p>{DateTime.fromJSDate(link.createdAt).toRelative()}</p>
+              </footer>
+            </div>
           </div>
         ))}
       </div>
